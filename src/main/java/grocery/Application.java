@@ -65,7 +65,6 @@ public class Application extends io.dropwizard.Application<ApplicationConfigurat
     }
 
     /** 
-     * @param config
      * @return - configuration context - containing hibernate session factory 
      * as it needs to be available before dao beans are created
      */
