@@ -5,7 +5,7 @@ build:
     - script:
         name: show base information
         code: |
-          java --version
+          java -version
           mvn --version
           echo $JAVA_HOME
     # A step that executes `gradle build` command
