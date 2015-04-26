@@ -21,27 +21,30 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @Entity
 @NamedQueries(
-{@NamedQuery(name = "grocery.Fruit.findAll", query = "from Fruit")})
+{@NamedQuery(name = "grocery.Fruit.findAll", query = "from Fruit f order by f.updated asc"),
+ @NamedQuery(name = "grocery.Fruit.deleteAll", query = "delete from Fruit"),
+ @NamedQuery(name = "grocery.Fruit.findByName", query = "from Fruit f where f.name like :name order by f.updated asc"),
+})
 public class Fruit
 {
 
     @Id
     @GeneratedValue
-    Integer id;
+    private Long id;
 
     @NotNull
     @JsonProperty
-    String name;
+    private String name;
 
     @JsonProperty
-    BigDecimal price;
+    private BigDecimal price;
 
     @JsonProperty
-    Integer stock;
+    private Integer stock;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     @JsonProperty
-    Date updated;
+    private Date updated;
 
     public Fruit()
     {
@@ -102,12 +105,12 @@ public class Fruit
         this.updated = updated;
     }
 
-    public Integer getId()
+    public Long getId()
     {
         return id;
     }
 
-    public void setId(Integer id)
+    public void setId(Long id)
     {
         this.id = id;
     }

@@ -1,6 +1,7 @@
 package grocery.resources;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotSame;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.reset;
@@ -9,6 +10,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import grocery.models.Fruit;
 import grocery.persistence.FruitDao;
+import io.dropwizard.jersey.validation.ConstraintViolationExceptionMapper;
 import io.dropwizard.testing.junit.ResourceTestRule;
 
 import java.math.BigDecimal;
@@ -27,6 +29,8 @@ import org.junit.ClassRule;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 
+import com.google.common.base.Optional;
+
 /**
  * Resource test
  *
@@ -44,7 +48,9 @@ public class FruitResourceTest
         FruitResource fruitResource = new FruitResource();
         fruitResource.fruitDao = fruitDao;
 
-        resources = ResourceTestRule.builder().addResource(fruitResource).build();
+        resources = ResourceTestRule.builder().addResource(fruitResource)
+                .addProvider(ConstraintViolationExceptionMapper.class)
+                .build();
     }
 
     private Fruit banana;
@@ -53,6 +59,8 @@ public class FruitResourceTest
     public void init()
     {
         banana = new Fruit("banana", new BigDecimal("12.20"), 20, new Date());
+        banana.setId(2l);
+        when(fruitDao.findById(2l)).thenReturn(Optional.fromNullable(banana));
         when(fruitDao.findAll()).thenReturn(Arrays.asList(banana));
         when(fruitDao.add(any(Fruit.class))).thenReturn(banana);
     }
@@ -73,15 +81,24 @@ public class FruitResourceTest
     }
     
     @Test
-    public void testAddFruits()
+    public void testUpdateFruitPrice()
     {
-        final Response response = resources.client().target("/fruits").request().post(Entity.entity(banana, MediaType.APPLICATION_JSON_TYPE));
-        
-        assertEquals(Response.Status.OK, response.getStatusInfo());
+        BigDecimal newPrice = new BigDecimal("23.10");
+        resources.client().target("/fruits/2/price").request().post(Entity.entity(newPrice, MediaType.APPLICATION_JSON_TYPE));
         
         ArgumentCaptor<Fruit> fruitCaptor = ArgumentCaptor.forClass(Fruit.class);
-        verify(fruitDao, times(1)).add(fruitCaptor.capture());
+        verify(fruitDao, times(1)).update(fruitCaptor.capture());
         
-        assertEquals(banana, fruitCaptor.getValue());
+        assertEquals(newPrice, fruitCaptor.getValue().getPrice());
+    }
+    
+    @Test
+    public void testUpdateFruitPrice_priceNotSet()
+    {
+        BigDecimal newPrice = null;
+        Response response = resources.client().target("/fruits/2/price").request().post(Entity.entity(newPrice, MediaType.APPLICATION_JSON_TYPE));
+        
+        assertNotSame(Response.Status.OK, response.getStatusInfo().getStatusCode());
+        verify(fruitDao, times(0)).update(any(Fruit.class));
     }
 }
