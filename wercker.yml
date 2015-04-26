@@ -1,1 +1,14 @@
-box: wercker/default
+box: wercker/android
+build:
+  # The steps that will be executed on build
+  steps:
+    - script:
+        name: show base information
+        code: |
+          java --version
+          mvn --version
+          echo $JAVA_HOME
+    # A step that executes `gradle build` command
+    - script:
+        name: run mvn clean test
+        
