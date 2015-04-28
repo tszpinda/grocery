@@ -8,7 +8,7 @@ build:
           java -version
           mvn --version
           echo $JAVA_HOME
-    # A step that executes `gradle build` command
+    # A step that executes `mvn clean test` command
     - script:
         name: run mvn clean test
         code: |
