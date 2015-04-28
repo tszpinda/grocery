@@ -11,4 +11,6 @@ build:
     # A step that executes `gradle build` command
     - script:
         name: run mvn clean test
+        code: |
+          mvn clean test
         
