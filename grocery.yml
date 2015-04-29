@@ -12,9 +12,9 @@ dataSourceFactory:
   hibernate.hbm2ddl.auto: create
   
 server:
- applicationConnectors:
-  - type: http
-    port: 8080
- adminConnectors:
-  - type: http
-    port: 8081
+ type: simple
+ applicationContextPath: /
+ adminContextPath: /admin
+ connector:
+  type: http
+  port: 8080
