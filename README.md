@@ -6,6 +6,7 @@
 - dropwizard
 - hibernate
 - spring
+- heroku
 
 
 ## Contains:
@@ -13,3 +14,14 @@
 - dao tests
 - resource tests
 - integration tests
+
+# heroku
+You can see running app on heroku:
+### admin pages
+- https://tsz-grocery.herokuapp.com/admin/
+
+### available rest apis
+- GET: https://tsz-grocery.herokuapp.com/fruits
+- GET: https://tsz-grocery.herokuapp.com/fruits/search
+- @POST: https://tsz-grocery.herokuapp.com/fruits/{id}/price
+- @PUT: https://tsz-grocery.herokuapp.com/fruits/addOrOverride
