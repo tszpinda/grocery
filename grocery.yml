@@ -10,3 +10,11 @@ dataSourceFactory:
   charSet: UTF-8
   hibernate.dialect: org.hibernate.dialect.MySQLDialect
   hibernate.hbm2ddl.auto: create
+  
+server:
+ applicationConnectors:
+  - type: http
+    port: 8080
+ adminConnectors:
+  - type: http
+    port: 8081
