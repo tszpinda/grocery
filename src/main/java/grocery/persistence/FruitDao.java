@@ -34,11 +34,6 @@ public class FruitDao extends AbstractDAO<Fruit>
         return list(namedQuery("grocery.Fruit.findAll"));
     }
 
-    public Fruit add(Fruit fruit)
-    {
-        return persist(fruit);
-    }
-
     public Optional<Fruit> findById(Long id)
     {
         return Optional.fromNullable(get(id));
@@ -53,7 +48,7 @@ public class FruitDao extends AbstractDAO<Fruit>
     {
         for(Fruit fruit : fruits)
         {
-            add(fruit);
+            persist(fruit);
         }
         return fruits;
     }

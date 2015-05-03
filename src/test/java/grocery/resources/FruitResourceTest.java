@@ -62,7 +62,6 @@ public class FruitResourceTest
         banana.setId(2l);
         when(fruitDao.findById(2l)).thenReturn(Optional.fromNullable(banana));
         when(fruitDao.findAll()).thenReturn(Arrays.asList(banana));
-        when(fruitDao.add(any(Fruit.class))).thenReturn(banana);
     }
 
     @After
